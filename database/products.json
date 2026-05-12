@@ -1,0 +1,26 @@
+[
+  {
+    "id": "prod_1",
+    "name": "Kính Râm Phân Cực Chống UV",
+    "category": "Kính râm",
+    "price": 2500000,
+    "stock": 25,
+    "image": "/assets/product1.png"
+  },
+  {
+    "id": "prod_2",
+    "name": "Gọng Kính Titan Mắt Mèo",
+    "category": "Gọng kính",
+    "price": 1850000,
+    "stock": 10,
+    "image": "/assets/product2.png"
+  },
+  {
+    "id": "prod_1778261828023",
+    "name": "Kính mắt mèo",
+    "category": "Gọng kính",
+    "price": 250000,
+    "stock": 20,
+    "image": "/assets/product1.png"
+  }
+]

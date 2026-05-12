@@ -1,0 +1,92 @@
+.verticalBar {
+  position: fixed;
+  top: 90px; /* Bắt đầu từ dưới header */
+  height: calc(100vh - 90px);
+  width: 90px;
+  background-color: var(--primary-hover);
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  padding: 24px 0;
+  z-index: 50; /* Để nằm dưới các popup nếu có */
+}
+
+.leftBar {
+  left: 0;
+  border-top-right-radius: 8px;
+  border-bottom-right-radius: 8px;
+}
+
+.rightBar {
+  right: 0;
+  border-top-left-radius: 8px;
+  border-bottom-left-radius: 8px;
+}
+
+.textContainer {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.announcementTextLeft {
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: 0.9rem;
+  letter-spacing: 1px;
+  text-align: center;
+  line-height: 1.5;
+  white-space: pre-line;
+  text-transform: uppercase;
+  animation: slideInRight 0.5s ease;
+}
+
+.announcementTextRight {
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: 0.9rem;
+  letter-spacing: 1px;
+  text-align: center;
+  line-height: 1.5;
+  white-space: pre-line;
+  text-transform: uppercase;
+  animation: slideInRight 0.5s ease;
+}
+
+.navButton {
+  background: none;
+  border: none;
+  color: #fff;
+  cursor: pointer;
+  padding: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0.3s ease;
+  opacity: 0.7;
+}
+
+.navButton:hover {
+  opacity: 1;
+}
+
+@keyframes slideInLeft {
+  from { opacity: 0; transform: rotate(180deg) translateY(-10px); }
+  to { opacity: 1; transform: rotate(180deg) translateY(0); }
+}
+
+@keyframes slideInRight {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Ẩn thanh Marquee trên điện thoại và iPad dọc */
+@media (max-width: 1024px) {
+  .verticalBar {
+    display: none !important;
+  }
+}

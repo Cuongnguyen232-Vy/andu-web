@@ -1,0 +1,143 @@
+.subscriptionSection {
+  width: calc(100% - 180px); /* 100% trừ đi 2 thanh Marquee mỗi bên 90px */
+  margin: 80px auto;
+  /* Bỏ bo góc (border-radius) để viền thẳng khớp sát vào 2 thanh Marquee */
+  position: relative;
+  background-image: url('/assets/form_bg.png');
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed; /* Tạo hiệu ứng cuộn mượt (parallax) */
+  display: flex;
+  flex-direction: column;
+}
+
+.overlay {
+  background-color: rgba(255, 255, 255, 0.4);
+  padding: 100px 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  backdrop-filter: blur(8px); /* Làm mờ ảnh nền giống thiết kế */
+}
+
+.formCard {
+  background: white;
+  padding: 40px 50px;
+  border-radius: 12px;
+  max-width: 650px;
+  width: 100%;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.15);
+  text-align: center;
+}
+
+.title {
+  font-size: 1.4rem;
+  font-weight: 800;
+  color: #222;
+  margin-bottom: 15px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.subtitle {
+  font-size: 0.95rem;
+  color: #666;
+  line-height: 1.5;
+  margin-bottom: 30px;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.input {
+  width: 100%;
+  padding: 14px 20px;
+  border: 1px solid #eee;
+  border-radius: 30px; /* Bo tròn góc giống mẫu */
+  background-color: #f5f5f5;
+  font-size: 0.95rem;
+  font-family: inherit;
+  transition: all 0.3s;
+}
+
+.input:focus {
+  outline: none;
+  border-color: var(--primary);
+  background-color: white;
+  box-shadow: 0 0 0 3px rgba(19, 92, 65, 0.1);
+}
+
+.submitBtn {
+  width: 100%;
+  padding: 14px 20px;
+  background-color: var(--primary, #135c41); /* Đổi sang xanh lá */
+  color: white;
+  border: none;
+  border-radius: 30px;
+  font-size: 1.05rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.3s;
+  margin-top: 10px;
+}
+
+.submitBtn:hover {
+  background-color: #0d422e; /* Xanh đậm hơn khi hover */
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px rgba(19, 92, 65, 0.3);
+}
+
+/* Dải màu Xanh lá Social Footer */
+.socialStripe {
+  background-color: var(--primary, #135c41); /* Đổi sang xanh lá */
+  padding: 20px 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 30px;
+  flex-wrap: wrap;
+}
+
+.socialText {
+  color: #fff; /* Chuyển chữ thành màu trắng để nổi bật trên nền xanh */
+  font-weight: 700;
+  font-size: 1.1rem;
+}
+
+.socialIcons {
+  display: flex;
+  gap: 15px;
+}
+
+.iconWrapper {
+  width: 35px;
+  height: 35px;
+  background-color: transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: transform 0.3s;
+  color: white; /* Đổi màu icon thành trắng */
+}
+
+.iconWrapper:hover {
+  transform: scale(1.15);
+}
+
+@media (max-width: 768px) {
+  .overlay {
+    padding: 60px 15px;
+  }
+  .formCard {
+    padding: 30px 20px;
+  }
+  .socialStripe {
+    flex-direction: column;
+    gap: 15px;
+    text-align: center;
+  }
+}

@@ -1,0 +1,18 @@
+[
+  {
+    "id": "user_admin_001",
+    "name": "Admin Andu",
+    "email": "admin@andu.com",
+    "password": "$2a$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi",
+    "role": "admin",
+    "createdAt": "2026-05-09T00:00:00Z"
+  },
+  {
+    "id": "user_1778295633265",
+    "name": "cuong",
+    "email": "cuong@gmail.com",
+    "password": "$2b$10$iSE5NkK6cN3T0owZeMLiqOe2SVUfmUbaj2sIFkofWHq5P2FS0DlO2",
+    "role": "user",
+    "createdAt": "2026-05-09T03:00:33.265Z"
+  }
+]

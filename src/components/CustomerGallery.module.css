@@ -1,0 +1,98 @@
+.gallerySection {
+  width: calc(100% - 180px);
+  max-width: 1350px;
+  margin: 100px auto;
+  padding: 0 40px;
+}
+
+.title {
+  text-align: center;
+  color: #ff6b00; /* Màu cam giống thiết kế gốc */
+  /* Gỡ bỏ font-sans để không bị lỗi chữ "Ả" tiếng Việt */
+  font-size: 2.8rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  margin-bottom: 50px;
+}
+
+.carouselContainer {
+  position: relative;
+  width: 100%;
+}
+
+.sliderWindow {
+  overflow: hidden;
+  width: 100%;
+}
+
+.sliderTrack {
+  display: flex;
+  transition: transform 0.5s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.slide {
+  flex: 0 0 calc(100% / 3); /* Hiển thị 3 ảnh 1 lúc */
+  padding: 0 15px; /* Khoảng cách giữa các ảnh */
+}
+
+.imageWrapper {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1 / 1; /* Cắt ảnh thành hình vuông (hoặc gần vuông) */
+  overflow: hidden;
+  background-color: #f5f5f5;
+}
+
+.imageWrapper img {
+  transition: transform 0.5s ease;
+}
+
+.imageWrapper:hover img {
+  transform: scale(1.05); /* Hiệu ứng zoom nhẹ khi hover */
+}
+
+/* Nút điều hướng */
+.navButton {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 36px;
+  height: 36px;
+  background-color: #ff6b00;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.6rem;
+  cursor: pointer;
+  z-index: 10;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+  transition: all 0.3s;
+  padding-bottom: 4px; /* Chỉnh nhẹ cho mũi tên nằm chính giữa */
+}
+
+.navButton:hover {
+  background-color: #e65c00;
+  transform: translateY(-50%) scale(1.1);
+}
+
+/* Nút trái nằm lấn vào ảnh đầu tiên một chút giống hình mẫu */
+.prevButton {
+  left: 0px; 
+}
+
+/* Nút phải nằm lấn vào ảnh cuối cùng một chút */
+.nextButton {
+  right: 0px;
+}
+
+@media (max-width: 900px) {
+  .slide {
+    flex: 0 0 100%; /* Trên điện thoại chỉ hiện 1 ảnh 1 lúc */
+  }
+  .sliderTrack {
+    /* Need to adjust JS logic for mobile transform if 100% instead of 100/3% */
+  }
+}

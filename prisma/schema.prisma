@@ -1,0 +1,95 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String   @id @default(uuid())
+  name      String
+  email     String   @unique
+  password  String
+  role      String   @default("user") // "admin" or "user"
+  phone     String?
+  address   String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  orders    Order[]
+  reviews   Review[]
+}
+
+model Product {
+  id            String       @id @default(uuid())
+  name          String
+  category      String       // "Gọng kính", "Tròng kính", "Kính râm", "Phụ kiện"
+  price         Int
+  originalPrice Int?
+  stock         Int
+  image         String
+  images        String?      // JSON stringified array of URLs
+  description   String?
+  material      String?
+  shape         String?
+  lensType      String?
+  promos        String?
+  colors        String?      // JSON stringified array of color names/hex
+  isNew         Boolean      @default(true)
+  createdAt     DateTime     @default(now())
+  updatedAt     DateTime     @updatedAt
+  orderItems    OrderItem[]
+  reviews       Review[]
+}
+
+model Order {
+  id              String      @id @default(uuid())
+  user            User?       @relation(fields: [userId], references: [id])
+  userId          String?
+  customerName    String
+  customerPhone   String
+  customerEmail   String?
+  shippingAddress String
+  notes           String?
+  totalAmount     Int
+  status          String      @default("pending") // "pending", "processing", "shipped", "delivered", "cancelled"
+  paymentMethod   String      @default("cod")     // "cod", "banking"
+  paymentStatus   String      @default("unpaid")  // "unpaid", "paid"
+  createdAt       DateTime    @default(now())
+  updatedAt       DateTime    @updatedAt
+  items           OrderItem[]
+}
+
+model OrderItem {
+  id        String  @id @default(uuid())
+  order     Order   @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  orderId   String
+  product   Product @relation(fields: [productId], references: [id])
+  productId String
+  name      String
+  quantity  Int
+  price     Int
+  image     String
+}
+
+model Review {
+  id        String   @id @default(uuid())
+  product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  productId String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId    String
+  userName  String
+  rating    Int
+  comment   String
+  images    String?  // JSON stringified array
+  status    String   @default("pending") // "pending", "approved", "hidden"
+  createdAt DateTime @default(now())
+}
+
+model Setting {
+  id        String   @id @default("global_config")
+  key       String   @unique
+  value     String   // JSON stringified value
+  updatedAt DateTime @updatedAt
+}
