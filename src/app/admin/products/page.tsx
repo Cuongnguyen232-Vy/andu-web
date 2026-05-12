@@ -331,9 +331,34 @@ export default function ProductsPage() {
 
                 <div className={styles.uploadBtnWrapper}>
                   <button type="button" className={styles.uploadBtn}>
-                    {isUploading ? 'Đang tải...' : '📷 Thêm ảnh sản phẩm'}
+                    {isUploading ? 'Đang tải...' : '📷 Upload từ máy tính (Sẽ mất sau vài giờ)'}
                   </button>
                   <input type="file" accept="image/*" onChange={handleFileUpload} disabled={isUploading} />
+                </div>
+                
+                <div style={{ marginTop: '15px' }}>
+                  <label style={{ fontSize: '0.85rem', color: '#444', fontWeight: 600, marginBottom: '6px', display: 'block' }}>🔥 Hoặc dán Link ảnh trực tiếp (Nên dùng):</label>
+                  <div style={{ display: 'flex', gap: '8px' }}>
+                    <input 
+                      type="text" 
+                      placeholder="Ví dụ: https://imgur.com/anh1.png" 
+                      id="imgUrlInput"
+                      style={{ flex: 1, padding: '9px 12px', border: '1.5px solid #e5e5e5', borderRadius: '8px', fontSize: '0.9rem' }}
+                    />
+                    <button 
+                      type="button" 
+                      onClick={() => {
+                        const input = document.getElementById('imgUrlInput') as HTMLInputElement;
+                        if (input && input.value) {
+                          const newImages = [...formData.images, input.value];
+                          setFormData(prev => ({ ...prev, images: newImages, image: newImages[0] }));
+                          input.value = '';
+                        }
+                      }}
+                      style={{ padding: '9px 18px', background: 'var(--primary, #135c41)', color: 'white', border: 'none', borderRadius: '8px', cursor: 'pointer', fontWeight: 600 }}
+                    >Thêm ảnh</button>
+                  </div>
+                  <p style={{ fontSize: '0.75rem', color: '#888', marginTop: '6px' }}>Vercel không cho phép lưu trữ file. Hãy copy link ảnh từ Google Photos, Facebook hoặc Imgur dán vào đây để ảnh không bị mất.</p>
                 </div>
               </div>
 
