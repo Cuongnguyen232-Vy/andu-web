@@ -14,7 +14,7 @@ export async function GET() {
         email: 'contact@andu.vn',
         address: '123 Đường Láng, Đống Đa, Hà Nội',
         promoText: '🎁 TẶNG HỘP KÍNH CAO CẤP KHI MUA GỌNG KÍNH',
-        bannerImage: '/assets/banner1.jpg',
+        bannerImage: '/assets/anh1.png',
         cat1Image: '/assets/category1.png',
         cat2Image: '/assets/category2.png',
         cat3Image: '/assets/category3.png',
