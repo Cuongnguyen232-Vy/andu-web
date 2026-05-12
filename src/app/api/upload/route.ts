@@ -36,8 +36,8 @@ export async function POST(request: Request) {
       await writeFile(filepath, buffer);
       return NextResponse.json({ url: `/assets/uploads/${filename}` });
     }
-  } catch (error) {
+  } catch (error: any) {
     console.error("Upload error:", error);
-    return NextResponse.json({ error: 'Lỗi server khi upload' }, { status: 500 });
+    return NextResponse.json({ error: error?.message || 'Lỗi server khi upload' }, { status: 500 });
   }
 }

@@ -122,9 +122,11 @@ export default function ProductsPage() {
           images: newImages,
           image: newImages[0] // Ảnh đầu tiên luôn là ảnh chính
         }));
+      } else if (data.error) {
+        alert('Lỗi từ server: ' + data.error);
       }
-    } catch (err) {
-      alert('Lỗi khi tải ảnh lên!');
+    } catch (err: any) {
+      alert('Lỗi khi kết nối để tải ảnh lên: ' + err.message);
     } finally {
       setIsUploading(false);
     }
