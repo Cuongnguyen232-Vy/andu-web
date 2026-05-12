@@ -1,7 +1,5 @@
 import { NextResponse } from 'next/server';
-import { writeFile, mkdir } from 'fs/promises';
-import { existsSync } from 'fs';
-import path from 'path';
+import { put } from '@vercel/blob';
 
 export async function POST(request: Request) {
   try {
@@ -12,26 +10,34 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: 'Không tìm thấy file' }, { status: 400 });
     }
 
-    const bytes = await file.arrayBuffer();
-    const buffer = Buffer.from(bytes);
-    
-    // Đảm bảo thư mục upload tồn tại
-    const uploadDir = path.join(process.cwd(), 'public', 'assets', 'uploads');
-    if (!existsSync(uploadDir)) {
-      await mkdir(uploadDir, { recursive: true });
-    }
+    // Vercel Blob Upload
+    if (process.env.BLOB_READ_WRITE_TOKEN) {
+      const blob = await put(file.name, file, {
+        access: 'public',
+      });
+      return NextResponse.json({ url: blob.url });
+    } else {
+      // Fallback cho Local (khi đang code trên máy)
+      const { writeFile, mkdir } = require('fs/promises');
+      const { existsSync } = require('fs');
+      const path = require('path');
+      
+      const bytes = await file.arrayBuffer();
+      const buffer = Buffer.from(bytes);
+      
+      const uploadDir = path.join(process.cwd(), 'public', 'assets', 'uploads');
+      if (!existsSync(uploadDir)) {
+        await mkdir(uploadDir, { recursive: true });
+      }
 
-    // Tạo tên file an toàn
-    const filename = `${Date.now()}_${file.name.replace(/\s+/g, '_')}`;
-    const filepath = path.join(uploadDir, filename);
-    
-    // Lưu file vào thư mục public/assets/uploads
-    await writeFile(filepath, buffer);
-    
-    // Trả về đường dẫn public để lưu vào database
-    return NextResponse.json({ url: `/assets/uploads/${filename}` });
+      const filename = `${Date.now()}_${file.name.replace(/\s+/g, '_')}`;
+      const filepath = path.join(uploadDir, filename);
+      
+      await writeFile(filepath, buffer);
+      return NextResponse.json({ url: `/assets/uploads/${filename}` });
+    }
   } catch (error) {
-    console.error(error);
+    console.error("Upload error:", error);
     return NextResponse.json({ error: 'Lỗi server khi upload' }, { status: 500 });
   }
 }
