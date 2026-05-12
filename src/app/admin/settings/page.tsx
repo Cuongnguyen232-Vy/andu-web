@@ -121,10 +121,19 @@ export default function AdminSettingsPage() {
                 )}
               </div>
               <div>
-                <input type="file" id="bannerUpload" accept="image/*" onChange={(e) => handleFileUpload(e, 'bannerImage')} style={{ display: 'none' }} />
-                <label htmlFor="bannerUpload" style={{ display: 'inline-block', padding: '10px 20px', backgroundColor: '#f0f0f0', color: '#333', borderRadius: '6px', cursor: 'pointer', fontWeight: 600, border: '1px solid #ddd' }}>
-                  {isUploading ? 'Đang tải...' : '🖼️ Thay ảnh Banner'}
-                </label>
+                <div style={{ display: 'flex', gap: '5px', marginBottom: '8px' }}>
+                  <input type="file" id="bannerUpload" accept="image/*" onChange={(e) => handleFileUpload(e, 'bannerImage')} style={{ display: 'none' }} />
+                  <label htmlFor="bannerUpload" style={{ display: 'inline-block', padding: '10px 20px', backgroundColor: '#f0f0f0', color: '#333', borderRadius: '6px', cursor: 'pointer', fontWeight: 600, border: '1px solid #ddd' }}>
+                    {isUploading ? 'Đang tải...' : '🖼️ Tải từ máy'}
+                  </label>
+                </div>
+                <input 
+                  type="text" 
+                  placeholder="Hoặc dán Link ảnh (Ví dụ: https://...)" 
+                  value={shopInfo.bannerImage} 
+                  onChange={e => setShopInfo({...shopInfo, bannerImage: e.target.value})} 
+                  style={{ width: '100%', minWidth: '250px', padding: '10px 12px', border: '1px solid #ddd', borderRadius: '6px', fontSize: '0.9rem' }}
+                />
                 <p style={{ fontSize: '0.8rem', color: '#888', marginTop: '10px' }}>Kích thước khuyến nghị: 1920x800px</p>
               </div>
             </div>
@@ -140,16 +149,25 @@ export default function AdminSettingsPage() {
               { key: 'cat3Image', title: 'Danh mục 3 (Tròng Kính)' },
               { key: 'cat4Image', title: 'Danh mục 4 (Phụ Kiện)' },
             ].map((cat, i) => (
-              <div key={cat.key} style={{ display: 'flex', gap: '15px', alignItems: 'center', backgroundColor: '#fafafa', padding: '10px', borderRadius: '8px' }}>
+              <div key={cat.key} style={{ display: 'flex', flexWrap: 'wrap', gap: '15px', alignItems: 'center', backgroundColor: '#fafafa', padding: '10px', borderRadius: '8px' }}>
                 <div style={{ width: '80px', height: '100px', borderRadius: '6px', overflow: 'hidden', backgroundColor: '#eaeaea' }}>
                   <img src={(shopInfo as any)[cat.key]} alt={cat.title} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                 </div>
-                <div>
+                <div style={{ flex: 1, minWidth: '200px' }}>
                   <p style={{ fontSize: '0.85rem', fontWeight: 600, margin: '0 0 8px' }}>{cat.title}</p>
-                  <input type="file" id={`upload-${cat.key}`} accept="image/*" onChange={(e) => handleFileUpload(e, cat.key)} style={{ display: 'none' }} />
-                  <label htmlFor={`upload-${cat.key}`} style={{ display: 'inline-block', padding: '6px 12px', fontSize: '0.8rem', backgroundColor: '#fff', color: '#333', borderRadius: '4px', cursor: 'pointer', border: '1px solid #ccc' }}>
-                    Tải ảnh lên
-                  </label>
+                  <div style={{ display: 'flex', gap: '5px', marginBottom: '5px' }}>
+                    <input type="file" id={`upload-${cat.key}`} accept="image/*" onChange={(e) => handleFileUpload(e, cat.key)} style={{ display: 'none' }} />
+                    <label htmlFor={`upload-${cat.key}`} style={{ display: 'inline-block', padding: '6px 12px', fontSize: '0.8rem', backgroundColor: '#fff', color: '#333', borderRadius: '4px', cursor: 'pointer', border: '1px solid #ccc' }}>
+                      Tải từ máy
+                    </label>
+                  </div>
+                  <input 
+                    type="text" 
+                    placeholder="Hoặc dán Link ảnh" 
+                    value={(shopInfo as any)[cat.key]} 
+                    onChange={e => setShopInfo({...shopInfo, [cat.key]: e.target.value})} 
+                    style={{ width: '100%', padding: '6px 10px', border: '1px solid #ddd', borderRadius: '4px', fontSize: '0.8rem' }}
+                  />
                 </div>
               </div>
             ))}
