@@ -2,7 +2,7 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import { usePathname, useRouter } from 'next/navigation';
-import { LayoutDashboard, Package, ShoppingCart, Star, Users, Settings, LogOut, Menu, X } from 'lucide-react';
+import { LayoutDashboard, Package, ShoppingCart, Star, Users, Settings, LogOut, Menu, X, Mail } from 'lucide-react';
 import { useState } from 'react';
 import styles from './layout.module.css';
 
@@ -17,6 +17,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     { name: 'Đơn hàng', path: '/admin/orders', icon: <ShoppingCart size={18} /> },
     { name: 'Đánh giá', path: '/admin/reviews', icon: <Star size={18} /> },
     { name: 'Khách hàng', path: '/admin/customers', icon: <Users size={18} /> },
+    { name: 'Email ĐK', path: '/admin/subscriptions', icon: <Mail size={18} /> },
     { name: 'Cài đặt', path: '/admin/settings', icon: <Settings size={18} /> },
   ];
 

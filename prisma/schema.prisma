@@ -93,3 +93,12 @@ model Setting {
   value     String   // JSON stringified value
   updatedAt DateTime @updatedAt
 }
+
+model Subscription {
+  id        String   @id @default(uuid())
+  name      String
+  email     String   @unique
+  phone     String
+  status    String   @default("active") // "active", "unsubscribed"
+  createdAt DateTime @default(now())
+}

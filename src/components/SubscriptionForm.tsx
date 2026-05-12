@@ -1,10 +1,32 @@
 'use client';
+import { useState } from 'react';
 import styles from './SubscriptionForm.module.css';
 
 export default function SubscriptionForm() {
-  const handleSubmit = (e: React.FormEvent) => {
+  const [formData, setFormData] = useState({ name: '', email: '', phone: '' });
+  const [loading, setLoading] = useState(false);
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    alert('Đăng ký thành công! Voucher 50.000Đ sẽ được gửi vào email của bạn ngay lập tức.');
+    setLoading(true);
+    try {
+      const res = await fetch('/api/subscriptions', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData)
+      });
+      const data = await res.json();
+      if (res.ok) {
+        alert('Đăng ký thành công! Voucher 50.000Đ sẽ được gửi vào email của bạn ngay lập tức.');
+        setFormData({ name: '', email: '', phone: '' });
+      } else {
+        alert(data.error || 'Có lỗi xảy ra');
+      }
+    } catch (err) {
+      alert('Lỗi kết nối');
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -17,10 +39,10 @@ export default function SubscriptionForm() {
             Đăng ký ngay bằng địa chỉ email để nhận thông tin ưu đãi lớn nhất từ Andu, đồng thời nhận ngay một voucher chiết khấu trực tiếp 50.000Đ vào hoá đơn tiếp theo!
           </p>
           <form className={styles.form} onSubmit={handleSubmit}>
-            <input type="text" placeholder="Họ và tên" className={styles.input} required />
-            <input type="email" placeholder="Email" className={styles.input} required />
-            <input type="tel" placeholder="Số điện thoại" className={styles.input} required />
-            <button type="submit" className={styles.submitBtn}>Đăng ký</button>
+            <input type="text" placeholder="Họ và tên" className={styles.input} required value={formData.name} onChange={e => setFormData({...formData, name: e.target.value})} />
+            <input type="email" placeholder="Email" className={styles.input} required value={formData.email} onChange={e => setFormData({...formData, email: e.target.value})} />
+            <input type="tel" placeholder="Số điện thoại" className={styles.input} required value={formData.phone} onChange={e => setFormData({...formData, phone: e.target.value})} />
+            <button type="submit" className={styles.submitBtn} disabled={loading}>{loading ? 'Đang gửi...' : 'Đăng ký'}</button>
           </form>
         </div>
       </div>
