@@ -12,6 +12,7 @@ type Product = {
   image: string;
   images?: string;
   colors?: string;
+  originalPrice?: number | null;
 };
 
 const COLOR_PRESETS = [

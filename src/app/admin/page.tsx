@@ -196,7 +196,7 @@ export default async function AdminDashboard() {
                   return (
                     <tr key={order.id}>
                       <td><strong>#{order.id.slice(0, 8).toUpperCase()}</strong></td>
-                      <td>{order.guestName || 'Khách vãng lai'}</td>
+                      <td>{order.customerName || 'Khách vãng lai'}</td>
                       <td>{new Date(order.createdAt).toLocaleDateString('vi-VN', { hour: '2-digit', minute: '2-digit' })}</td>
                       <td>{order.totalAmount.toLocaleString('vi-VN')}₫</td>
                       <td>
