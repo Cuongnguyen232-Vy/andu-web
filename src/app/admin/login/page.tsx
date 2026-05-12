@@ -1,11 +1,11 @@
 'use client';
-import { useState } from 'react';
+import { Suspense, useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import Image from 'next/image';
 import Link from 'next/link';
 import styles from './login.module.css';
 
-export default function AdminLoginPage() {
+function AdminLoginContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const isUnauthorized = searchParams.get('error') === 'unauthorized';
@@ -78,5 +78,13 @@ export default function AdminLoginPage() {
         <Link href="/" className={styles.backLink}>← Quay về trang chủ</Link>
       </div>
     </div>
+  );
+}
+
+export default function AdminLoginPage() {
+  return (
+    <Suspense fallback={<div style={{ textAlign: 'center', padding: '50px' }}>Loading...</div>}>
+      <AdminLoginContent />
+    </Suspense>
   );
 }
