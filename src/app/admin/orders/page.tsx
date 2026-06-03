@@ -98,7 +98,7 @@ export default async function AdminOrdersPage({ searchParams }: { searchParams: 
             return (
               <div key={order.id} style={{ border: '1px solid #eee', borderRadius: '10px', overflow: 'hidden', transition: 'box-shadow 0.2s' }}>
                 {/* Header đơn hàng */}
-                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr 1fr 1fr', alignItems: 'center', padding: '18px 24px', backgroundColor: '#fafafa', borderBottom: '1px solid #f0f0f0', gap: '10px' }}>
+                <div className="admin-order-header">
                   <div>
                     <span style={{ fontSize: '0.78rem', color: '#888', textTransform: 'uppercase', letterSpacing: '1px', display: 'block', marginBottom: '4px' }}>Mã đơn</span>
                     <strong style={{ color: '#222', fontSize: '0.95rem' }}>#{order.id.slice(0, 8).toUpperCase()}</strong>
@@ -153,14 +153,14 @@ export default async function AdminOrdersPage({ searchParams }: { searchParams: 
                   </div>
 
                   {/* Thông tin giao hàng + Hành động */}
-                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', borderTop: '1px solid #f0f0f0', paddingTop: '15px' }}>
+                  <div className="admin-order-footer">
                     <div style={{ fontSize: '0.88rem', color: '#666' }}>
                       <strong style={{ color: '#444' }}>Địa chỉ:</strong> {order.shippingAddress}
                       {order.notes && <p style={{ margin: '5px 0 0', fontSize: '0.85rem', color: '#999' }}><em>Ghi chú: {order.notes}</em></p>}
                     </div>
                     
                     {/* Nút chuyển trạng thái */}
-                    <div style={{ display: 'flex', gap: '8px', flexShrink: 0 }}>
+                    <div className="admin-order-actions">
                       {nextStatuses.map(nextStatus => {
                         const nextInfo = STATUS_MAP[nextStatus];
                         const isCancel = nextStatus === 'cancelled';
@@ -204,6 +204,53 @@ export default async function AdminOrdersPage({ searchParams }: { searchParams: 
           })}
         </div>
       )}
+      <style dangerouslySetInnerHTML={{ __html: `
+        .admin-order-header {
+          display: grid;
+          grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+          align-items: center;
+          padding: 18px 24px;
+          background-color: #fafafa;
+          border-bottom: 1px solid #f0f0f0;
+          gap: 10px;
+        }
+        .admin-order-footer {
+          display: flex;
+          justify-content: space-between;
+          align-items: flex-end;
+          border-top: 1px solid #f0f0f0;
+          padding-top: 15px;
+        }
+        .admin-order-actions {
+          display: flex;
+          gap: 8px;
+          flex-shrink: 0;
+        }
+
+        @media (max-width: 1024px) {
+          .admin-order-header {
+            grid-template-columns: 1fr 1fr !important;
+            gap: 15px !important;
+            padding: 15px !important;
+          }
+          .admin-order-footer {
+            flex-direction: column !important;
+            align-items: stretch !important;
+            gap: 15px !important;
+          }
+          .admin-order-actions {
+            justify-content: flex-start !important;
+            flex-wrap: wrap !important;
+          }
+        }
+
+        @media (max-width: 580px) {
+          .admin-order-header {
+            grid-template-columns: 1fr !important;
+            gap: 8px !important;
+          }
+        }
+      `}} />
     </div>
   );
 }

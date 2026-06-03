@@ -13,14 +13,34 @@ export async function GET() {
         phone: '0987 654 321',
         email: 'contact@andu.vn',
         address: '123 Đường Láng, Đống Đa, Hà Nội',
+        zalo: '0987654321',
+        facebook: 'https://facebook.com/andueyewear',
+        instagram: 'https://instagram.com/andueyewear',
         promoText: '🎁 TẶNG HỘP KÍNH CAO CẤP KHI MUA GỌNG KÍNH',
-        bannerImage: '/assets/anh1.png',
+        bannerImage: '/assets/banner1.jpg',
         cat1Image: '/assets/category1.png',
         cat2Image: '/assets/category2.png',
         cat3Image: '/assets/category3.png',
         cat4Image: '/assets/category4.png',
         storyText: 'Cùng Andu Eyewear khám phá những xu hướng kính mắt thời thượng nhất. Sự kết hợp hoàn hảo giữa chế tác tinh xảo và thiết kế độc bản, mang đến trải nghiệm khác biệt để tôn vinh mọi đường nét trên khuôn mặt bạn.',
-        footerDesc: 'Nâng tầm phong cách, bảo vệ tầm nhìn của bạn mỗi ngày với công nghệ và thiết kế độc quyền.'
+        footerDesc: 'Nâng tầm phong cách, bảo vệ tầm nhìn của bạn mỗi ngày với công nghệ và thiết kế độc quyền.',
+        
+        // Cấu hình mới thêm
+        maxCoins: 15000,
+        shipNhanh: 30000,
+        shipHoaToc: 50000,
+        shipTietKiem: 15000,
+        couponProductPctCode: 'ANDU10',
+        couponProductPctVal: 10,
+        couponProductFlatCode: 'ANDU50',
+        couponProductFlatVal: 50000,
+        couponShipCode: 'FREESHIP',
+        couponShipVal: 100,
+        depositPercent: 50,
+        enableFreeShipOver500k: true,
+        enableCOD: true,
+        enableVNPay: true,
+        enableBankTransfer: true
       });
     }
 

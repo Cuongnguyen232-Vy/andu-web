@@ -34,7 +34,7 @@ export default async function AdminCustomersPage() {
       </div>
 
       {/* Thống kê nhanh */}
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '15px', marginBottom: '30px' }}>
+      <div className="admin-stats-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '15px', marginBottom: '30px' }}>
         <div style={{ padding: '20px', backgroundColor: '#f0faf5', borderRadius: '10px', textAlign: 'center' }}>
           <p style={{ fontSize: '2rem', fontWeight: 800, color: 'var(--primary)', margin: '0 0 5px' }}>{users.filter(u => u.role === 'admin').length}</p>
           <span style={{ fontSize: '0.85rem', color: '#666' }}>Quản trị viên</span>
@@ -50,54 +50,64 @@ export default async function AdminCustomersPage() {
       </div>
 
       {/* Bảng danh sách */}
-      <table style={{ width: '100%', borderCollapse: 'collapse' }}>
-        <thead>
-          <tr style={{ borderBottom: '2px solid #eee', textAlign: 'left' }}>
-            <th style={{ padding: '14px 10px', fontSize: '0.85rem', color: '#666', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '1px' }}>Tài khoản</th>
-            <th style={{ padding: '14px 10px', fontSize: '0.85rem', color: '#666', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '1px' }}>Email</th>
-            <th style={{ padding: '14px 10px', fontSize: '0.85rem', color: '#666', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '1px' }}>Vai trò</th>
-            <th style={{ padding: '14px 10px', fontSize: '0.85rem', color: '#666', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '1px' }}>Ngày tạo</th>
-            <th style={{ padding: '14px 10px', fontSize: '0.85rem', color: '#666', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '1px', textAlign: 'center' }}>Thao tác</th>
-          </tr>
-        </thead>
-        <tbody>
-          {users.map(user => (
-            <tr key={user.id} style={{ borderBottom: '1px solid #f0f0f0' }}>
-              <td style={{ padding: '14px 10px' }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                  <div style={{ width: '38px', height: '38px', borderRadius: '50%', backgroundColor: user.role === 'admin' ? 'var(--primary)' : '#e0e0e0', color: user.role === 'admin' ? '#fff' : '#555', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 700, fontSize: '0.85rem', flexShrink: 0 }}>
-                    {user.name.charAt(0).toUpperCase()}
-                  </div>
-                  <span style={{ fontWeight: 600, color: '#222', fontSize: '0.95rem' }}>{user.name}</span>
-                </div>
-              </td>
-              <td style={{ padding: '14px 10px', fontSize: '0.9rem', color: '#555' }}>{user.email}</td>
-              <td style={{ padding: '14px 10px' }}>
-                <span style={{ 
-                  padding: '4px 12px', borderRadius: '20px', fontSize: '0.8rem', fontWeight: 600,
-                  backgroundColor: user.role === 'admin' ? '#d4edda' : '#e2e3e5',
-                  color: user.role === 'admin' ? '#155724' : '#383d41'
-                }}>
-                  {user.role === 'admin' ? 'Admin' : 'Khách hàng'}
-                </span>
-              </td>
-              <td style={{ padding: '14px 10px', fontSize: '0.9rem', color: '#888' }}>
-                {new Date(user.createdAt).toLocaleDateString('vi-VN')}
-              </td>
-              <td style={{ padding: '14px 10px', textAlign: 'center' }}>
-                {user.role !== 'admin' ? (
-                  <form action={deleteUser} style={{ display: 'inline' }}>
-                    <input type="hidden" name="userId" value={user.id} />
-                    <DeleteUserButton userName={user.name} />
-                  </form>
-                ) : (
-                  <span style={{ fontSize: '0.82rem', color: '#aaa', fontStyle: 'italic' }}>Bảo vệ</span>
-                )}
-              </td>
+      <div className="admin-table-wrapper" style={{ overflowX: 'auto', width: '100%' }}>
+        <table style={{ width: '100%', borderCollapse: 'collapse', minWidth: '700px' }}>
+          <thead>
+            <tr style={{ borderBottom: '2px solid #eee', textAlign: 'left' }}>
+              <th style={{ padding: '14px 10px', fontSize: '0.85rem', color: '#666', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '1px' }}>Tài khoản</th>
+              <th style={{ padding: '14px 10px', fontSize: '0.85rem', color: '#666', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '1px' }}>Email</th>
+              <th style={{ padding: '14px 10px', fontSize: '0.85rem', color: '#666', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '1px' }}>Vai trò</th>
+              <th style={{ padding: '14px 10px', fontSize: '0.85rem', color: '#666', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '1px' }}>Ngày tạo</th>
+              <th style={{ padding: '14px 10px', fontSize: '0.85rem', color: '#666', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '1px', textAlign: 'center' }}>Thao tác</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {users.map(user => (
+              <tr key={user.id} style={{ borderBottom: '1px solid #f0f0f0' }}>
+                <td style={{ padding: '14px 10px' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                    <div style={{ width: '38px', height: '38px', borderRadius: '50%', backgroundColor: user.role === 'admin' ? 'var(--primary)' : '#e0e0e0', color: user.role === 'admin' ? '#fff' : '#555', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 700, fontSize: '0.85rem', flexShrink: 0 }}>
+                      {user.name.charAt(0).toUpperCase()}
+                    </div>
+                    <span style={{ fontWeight: 600, color: '#222', fontSize: '0.95rem' }}>{user.name}</span>
+                  </div>
+                </td>
+                <td style={{ padding: '14px 10px', fontSize: '0.9rem', color: '#555' }}>{user.email}</td>
+                <td style={{ padding: '14px 10px' }}>
+                  <span style={{ 
+                    padding: '4px 12px', borderRadius: '20px', fontSize: '0.8rem', fontWeight: 600,
+                    backgroundColor: user.role === 'admin' ? '#d4edda' : '#e2e3e5',
+                    color: user.role === 'admin' ? '#155724' : '#383d41'
+                  }}>
+                    {user.role === 'admin' ? 'Admin' : 'Khách hàng'}
+                  </span>
+                </td>
+                <td style={{ padding: '14px 10px', fontSize: '0.9rem', color: '#888' }}>
+                  {new Date(user.createdAt).toLocaleDateString('vi-VN')}
+                </td>
+                <td style={{ padding: '14px 10px', textAlign: 'center' }}>
+                  {user.role !== 'admin' ? (
+                    <form action={deleteUser} style={{ display: 'inline' }}>
+                      <input type="hidden" name="userId" value={user.id} />
+                      <DeleteUserButton userName={user.name} />
+                    </form>
+                  ) : (
+                    <span style={{ fontSize: '0.82rem', color: '#aaa', fontStyle: 'italic' }}>Bảo vệ</span>
+                  )}
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+      <style dangerouslySetInnerHTML={{ __html: `
+        @media (max-width: 768px) {
+          .admin-stats-grid {
+            grid-template-columns: 1fr !important;
+            gap: 10px !important;
+          }
+        }
+      `}} />
     </div>
   );
 }

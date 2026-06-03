@@ -34,12 +34,35 @@ export async function DELETE(request: Request, { params }: { params: Promise<{ i
   try {
     const { id } = await params;
     
-    await prisma.product.delete({
-      where: { id }
+    await prisma.$transaction(async (tx) => {
+      // 1. Xóa các đánh giá liên quan
+      await tx.review.deleteMany({
+        where: { productId: id }
+      });
+      
+      // 2. Xóa các chi tiết đơn hàng liên quan
+      await tx.orderItem.deleteMany({
+        where: { productId: id }
+      });
+
+      // 3. Xóa các đơn hàng rỗng (không còn sản phẩm nào)
+      await tx.order.deleteMany({
+        where: {
+          items: {
+            none: {}
+          }
+        }
+      });
+      
+      // 4. Xóa sản phẩm
+      await tx.product.delete({
+        where: { id }
+      });
     });
     
     return NextResponse.json({ success: true });
   } catch (error) {
-    return NextResponse.json({ error: 'Lỗi xóa dữ liệu' }, { status: 500 });
+    console.error('Lỗi khi xóa sản phẩm:', error);
+    return NextResponse.json({ error: 'Lỗi xóa dữ liệu sản phẩm' }, { status: 500 });
   }
 }

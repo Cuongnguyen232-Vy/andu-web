@@ -5,7 +5,10 @@
     "category": "Kính râm",
     "price": 2500000,
     "stock": 25,
-    "image": "/assets/product1.png"
+    "image": "/assets/product1.png",
+    "description": "Kính râm phân cực cao cấp chống tia UV bảo vệ mắt hoàn hảo, gọng nhựa bền bỉ, phong cách thời thượng phù hợp đi chơi và du lịch.",
+    "material": "nhua",
+    "shape": "oval"
   },
   {
     "id": "prod_2",
@@ -13,14 +16,64 @@
     "category": "Gọng kính",
     "price": 1850000,
     "stock": 10,
-    "image": "/assets/product2.png"
+    "image": "/assets/product2.png",
+    "description": "Gọng kính titan nhẹ như lông hồng, dáng mắt mèo quyến rũ cho phái nữ. Không gây kích ứng da, bền màu trọn đời.",
+    "material": "titan",
+    "shape": "mat-meo"
   },
   {
-    "id": "prod_1778261828023",
-    "name": "Kính mắt mèo",
+    "id": "prod_3",
+    "name": "Gọng Kính Nhựa Tròn Minimalist",
     "category": "Gọng kính",
-    "price": 250000,
-    "stock": 20,
-    "image": "/assets/product1.png"
+    "price": 350000,
+    "stock": 50,
+    "image": "/assets/product1.png",
+    "description": "Thiết kế gọng nhựa dẻo TR90 chịu lực cực tốt, dáng tròn retro dễ thương trẻ trung năng động.",
+    "material": "nhua",
+    "shape": "tron"
+  },
+  {
+    "id": "prod_4",
+    "name": "Gọng Kính Kim Loại Classic Oval",
+    "category": "Gọng kính",
+    "price": 450000,
+    "stock": 15,
+    "image": "/assets/product2.png",
+    "description": "Gọng kim loại siêu mỏng thời trang, phong cách thanh lịch Hàn Quốc phù hợp đi làm, đi học.",
+    "material": "kim-loai",
+    "shape": "oval"
+  },
+  {
+    "id": "prod_5",
+    "name": "Tròng Kính Cận Chống Ánh Sáng Xanh Essilor",
+    "category": "Tròng kính",
+    "price": 850000,
+    "stock": 100,
+    "image": "/assets/product1.png",
+    "description": "Tròng kính chính hãng Essilor Pháp chống hoàn toàn ánh sáng xanh từ màn hình điện thoại, máy tính, giảm mỏi mắt điều tiết tốt.",
+    "material": "nhua",
+    "lensType": "chong-anh-sang-xanh"
+  },
+  {
+    "id": "prod_6",
+    "name": "Tròng Kính Đổi Màu Khói Chemi 1.56",
+    "category": "Tròng kính",
+    "price": 650000,
+    "stock": 80,
+    "image": "/assets/product2.png",
+    "description": "Tròng đổi màu khói tự động khi tiếp xúc với tia UV mặt trời, trong suốt khi ở trong nhà. Rất tiện lợi cho người cận thị.",
+    "material": "nhua",
+    "lensType": "doi-mau"
+  },
+  {
+    "id": "prod_7",
+    "name": "Kính Râm Phi Công Classic",
+    "category": "Kính râm",
+    "price": 1200000,
+    "stock": 12,
+    "image": "/assets/product1.png",
+    "description": "Thiết kế phi công tráng gương đẳng cấp nam tính, chống chói Polarized tuyệt đối khi lái xe ngoài nắng.",
+    "material": "kim-loai",
+    "shape": "oval"
   }
 ]

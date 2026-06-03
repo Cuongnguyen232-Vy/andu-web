@@ -18,7 +18,24 @@ export default function AdminSettingsPage() {
     cat3Image: '/assets/category3.png',
     cat4Image: '/assets/category4.png',
     storyText: 'Cùng Andu Eyewear khám phá những xu hướng kính mắt thời thượng nhất. Sự kết hợp hoàn hảo giữa chế tác tinh xảo và thiết kế độc bản, mang đến trải nghiệm khác biệt để tôn vinh mọi đường nét trên khuôn mặt bạn.',
-    footerDesc: 'Nâng tầm phong cách, bảo vệ tầm nhìn của bạn mỗi ngày với công nghệ và thiết kế độc quyền.'
+    footerDesc: 'Nâng tầm phong cách, bảo vệ tầm nhìn của bạn mỗi ngày với công nghệ và thiết kế độc quyền.',
+
+    // Cấu hình mới thêm
+    maxCoins: 15000,
+    shipNhanh: 30000,
+    shipHoaToc: 50000,
+    shipTietKiem: 15000,
+    couponProductPctCode: 'ANDU10',
+    couponProductPctVal: 10,
+    couponProductFlatCode: 'ANDU50',
+    couponProductFlatVal: 50000,
+    couponShipCode: 'FREESHIP',
+    couponShipVal: 100,
+    depositPercent: 50,
+    enableFreeShipOver500k: true,
+    enableCOD: true,
+    enableVNPay: true,
+    enableBankTransfer: true
   });
 
   const [saved, setSaved] = useState(false);
@@ -35,8 +52,20 @@ export default function AdminSettingsPage() {
       .catch(err => console.log(err));
   }, []);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    setShopInfo({ ...shopInfo, [e.target.name]: e.target.value });
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+    const { name, value, type } = e.target;
+    if (type === 'checkbox') {
+      const checked = (e.target as HTMLInputElement).checked;
+      setShopInfo(prev => ({ ...prev, [name]: checked }));
+    } else {
+      const isNumeric = [
+        'maxCoins', 'depositPercent', 'shipNhanh', 'shipHoaToc', 'shipTietKiem',
+        'couponProductPctVal', 'couponProductFlatVal', 'couponShipVal'
+      ].includes(name);
+      
+      const parsedValue = isNumeric ? (parseInt(value) || 0) : value;
+      setShopInfo(prev => ({ ...prev, [name]: parsedValue }));
+    }
     setSaved(false);
   };
 
@@ -246,34 +275,194 @@ export default function AdminSettingsPage() {
         </form>
       </div>
 
-      {/* Chính sách vận chuyển */}
+      {/* Cấu hình Ví Xu & Đặt Cọc */}
+      <div style={{ backgroundColor: '#fff', padding: '30px', borderRadius: '12px', boxShadow: '0 2px 15px rgba(0,0,0,0.04)', marginBottom: '25px' }}>
+        <h2 style={{ fontSize: '1.1rem', fontWeight: 700, color: '#222', marginBottom: '25px', paddingBottom: '12px', borderBottom: '1px solid #eee', textTransform: 'uppercase', letterSpacing: '1px' }}>
+          🪙 Cấu hình xu Shopee & Tiền cọc kính cận
+        </h2>
+        <form onSubmit={handleSave} style={{ display: 'flex', flexDirection: 'column', gap: '18px' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '18px' }}>
+            <div>
+              <label style={labelStyle}>Số xu giảm tối đa mỗi đơn (1 xu = 1₫)</label>
+              <input type="number" name="maxCoins" value={shopInfo.maxCoins} onChange={handleChange} style={inputStyle} onFocus={(e) => e.target.style.borderColor = 'var(--primary)'} onBlur={(e) => e.target.style.borderColor = '#e0e0e0'} />
+            </div>
+            <div>
+              <label style={labelStyle}>Phần trăm cọc tròng kính / cắt cận (%)</label>
+              <input type="number" name="depositPercent" value={shopInfo.depositPercent} onChange={handleChange} style={inputStyle} onFocus={(e) => e.target.style.borderColor = 'var(--primary)'} onBlur={(e) => e.target.style.borderColor = '#e0e0e0'} />
+            </div>
+          </div>
+          <button type="submit" style={{ alignSelf: 'flex-start', padding: '12px 30px', backgroundColor: saved ? '#28a745' : 'var(--primary)', color: '#fff', border: 'none', borderRadius: '8px', fontSize: '0.95rem', fontWeight: 700, cursor: 'pointer', transition: 'all 0.3s' }}>
+            {saved ? '✓ Đã lưu!' : 'Lưu cấu hình'}
+          </button>
+        </form>
+      </div>
+
+      {/* Cấu hình Biểu Phí Vận Chuyển */}
+      <div style={{ backgroundColor: '#fff', padding: '30px', borderRadius: '12px', boxShadow: '0 2px 15px rgba(0,0,0,0.04)', marginBottom: '25px' }}>
+        <h2 style={{ fontSize: '1.1rem', fontWeight: 700, color: '#222', marginBottom: '25px', paddingBottom: '12px', borderBottom: '1px solid #eee', textTransform: 'uppercase', letterSpacing: '1px' }}>
+          🚚 Cấu hình Biểu phí vận chuyển
+        </h2>
+        <form onSubmit={handleSave} style={{ display: 'flex', flexDirection: 'column', gap: '18px' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '18px' }}>
+            <div>
+              <label style={labelStyle}>Giao hàng nhanh (₫)</label>
+              <input type="number" name="shipNhanh" value={shopInfo.shipNhanh} onChange={handleChange} style={inputStyle} onFocus={(e) => e.target.style.borderColor = 'var(--primary)'} onBlur={(e) => e.target.style.borderColor = '#e0e0e0'} />
+            </div>
+            <div>
+              <label style={labelStyle}>Giao hỏa tốc 2H (₫)</label>
+              <input type="number" name="shipHoaToc" value={shopInfo.shipHoaToc} onChange={handleChange} style={inputStyle} onFocus={(e) => e.target.style.borderColor = 'var(--primary)'} onBlur={(e) => e.target.style.borderColor = '#e0e0e0'} />
+            </div>
+            <div>
+              <label style={labelStyle}>Giao hàng tiết kiệm (₫)</label>
+              <input type="number" name="shipTietKiem" value={shopInfo.shipTietKiem} onChange={handleChange} style={inputStyle} onFocus={(e) => e.target.style.borderColor = 'var(--primary)'} onBlur={(e) => e.target.style.borderColor = '#e0e0e0'} />
+            </div>
+          </div>
+          <button type="submit" style={{ alignSelf: 'flex-start', padding: '12px 30px', backgroundColor: saved ? '#28a745' : 'var(--primary)', color: '#fff', border: 'none', borderRadius: '8px', fontSize: '0.95rem', fontWeight: 700, cursor: 'pointer', transition: 'all 0.3s' }}>
+            {saved ? '✓ Đã lưu!' : 'Lưu biểu phí'}
+          </button>
+        </form>
+      </div>
+
+      {/* Cấu hình Vouchers / Coupon */}
+      <div style={{ backgroundColor: '#fff', padding: '30px', borderRadius: '12px', boxShadow: '0 2px 15px rgba(0,0,0,0.04)', marginBottom: '25px' }}>
+        <h2 style={{ fontSize: '1.1rem', fontWeight: 700, color: '#222', marginBottom: '25px', paddingBottom: '12px', borderBottom: '1px solid #eee', textTransform: 'uppercase', letterSpacing: '1px' }}>
+          🎟️ Cấu hình Mã giảm giá (Coupon Codes)
+        </h2>
+        <form onSubmit={handleSave} style={{ display: 'flex', flexDirection: 'column', gap: '18px' }}>
+          {/* Coupon 1 */}
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '18px', paddingBottom: '15px', borderBottom: '1px solid #f5f5f5' }}>
+            <div>
+              <label style={labelStyle}>Mã giảm giá theo % sản phẩm</label>
+              <input name="couponProductPctCode" value={shopInfo.couponProductPctCode} onChange={handleChange} style={inputStyle} onFocus={(e) => e.target.style.borderColor = 'var(--primary)'} onBlur={(e) => e.target.style.borderColor = '#e0e0e0'} />
+            </div>
+            <div>
+              <label style={labelStyle}>Giá trị giảm (%)</label>
+              <input type="number" name="couponProductPctVal" value={shopInfo.couponProductPctVal} onChange={handleChange} style={inputStyle} onFocus={(e) => e.target.style.borderColor = 'var(--primary)'} onBlur={(e) => e.target.style.borderColor = '#e0e0e0'} />
+            </div>
+          </div>
+          {/* Coupon 2 */}
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '18px', paddingBottom: '15px', borderBottom: '1px solid #f5f5f5' }}>
+            <div>
+              <label style={labelStyle}>Mã giảm tiền mặt cố định</label>
+              <input name="couponProductFlatCode" value={shopInfo.couponProductFlatCode} onChange={handleChange} style={inputStyle} onFocus={(e) => e.target.style.borderColor = 'var(--primary)'} onBlur={(e) => e.target.style.borderColor = '#e0e0e0'} />
+            </div>
+            <div>
+              <label style={labelStyle}>Số tiền giảm (₫)</label>
+              <input type="number" name="couponProductFlatVal" value={shopInfo.couponProductFlatVal} onChange={handleChange} style={inputStyle} onFocus={(e) => e.target.style.borderColor = 'var(--primary)'} onBlur={(e) => e.target.style.borderColor = '#e0e0e0'} />
+            </div>
+          </div>
+          {/* Coupon 3 */}
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '18px' }}>
+            <div>
+              <label style={labelStyle}>Mã giảm phí vận chuyển (Freeship)</label>
+              <input name="couponShipCode" value={shopInfo.couponShipCode} onChange={handleChange} style={inputStyle} onFocus={(e) => e.target.style.borderColor = 'var(--primary)'} onBlur={(e) => e.target.style.borderColor = '#e0e0e0'} />
+            </div>
+            <div>
+              <label style={labelStyle}>Giá trị giảm phí ship (%)</label>
+              <input type="number" name="couponShipVal" value={shopInfo.couponShipVal} onChange={handleChange} style={inputStyle} onFocus={(e) => e.target.style.borderColor = 'var(--primary)'} onBlur={(e) => e.target.style.borderColor = '#e0e0e0'} />
+            </div>
+          </div>
+          <button type="submit" style={{ alignSelf: 'flex-start', padding: '12px 30px', backgroundColor: saved ? '#28a745' : 'var(--primary)', color: '#fff', border: 'none', borderRadius: '8px', fontSize: '0.95rem', fontWeight: 700, cursor: 'pointer', transition: 'all 0.3s' }}>
+            {saved ? '✓ Đã lưu!' : 'Lưu mã giảm giá'}
+          </button>
+        </form>
+      </div>
+
+      {/* Trạng thái Bật/Tắt các Cổng/Chính sách */}
       <div style={{ backgroundColor: '#fff', padding: '30px', borderRadius: '12px', boxShadow: '0 2px 15px rgba(0,0,0,0.04)', marginBottom: '25px' }}>
         <h2 style={{ fontSize: '1.1rem', fontWeight: 700, color: '#222', marginBottom: '20px', paddingBottom: '12px', borderBottom: '1px solid #eee', textTransform: 'uppercase', letterSpacing: '1px' }}>
-          🚚 Chính sách vận chuyển & thanh toán
+          ⚙️ Bật/Tắt phương thức vận chuyển & thanh toán
         </h2>
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
+        <form onSubmit={handleSave} style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+          
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '14px 18px', backgroundColor: '#fafafa', borderRadius: '8px' }}>
             <div>
-              <p style={{ fontWeight: 600, color: '#222', margin: 0 }}>Miễn phí vận chuyển</p>
-              <p style={{ fontSize: '0.85rem', color: '#888', margin: '4px 0 0' }}>Áp dụng cho tất cả đơn hàng</p>
+              <p style={{ fontWeight: 600, color: '#222', margin: 0 }}>Miễn phí ship trên 500k</p>
+              <p style={{ fontSize: '0.85rem', color: '#888', margin: '4px 0 0' }}>Tự động miễn phí vận chuyển khi tổng đơn từ 500k trở lên</p>
             </div>
-            <span style={{ padding: '4px 14px', backgroundColor: '#d4edda', color: '#155724', borderRadius: '20px', fontWeight: 600, fontSize: '0.82rem' }}>Đang bật</span>
+            <label className="switch" style={{ position: 'relative', display: 'inline-block', width: '50px', height: '26px' }}>
+              <input type="checkbox" name="enableFreeShipOver500k" checked={shopInfo.enableFreeShipOver500k} onChange={handleChange} style={{ opacity: 0, width: 0, height: 0 }} />
+              <span style={{
+                position: 'absolute', cursor: 'pointer', top: 0, left: 0, right: 0, bottom: 0,
+                backgroundColor: shopInfo.enableFreeShipOver500k ? 'var(--primary)' : '#ccc',
+                transition: '0.4s', borderRadius: '34px'
+              }}>
+                <span style={{
+                  position: 'absolute', content: '""', height: '18px', width: '18px', left: '4px', bottom: '4px',
+                  backgroundColor: 'white', transition: '0.4s', borderRadius: '50%',
+                  transform: shopInfo.enableFreeShipOver500k ? 'translateX(24px)' : 'none'
+                }} />
+              </span>
+            </label>
           </div>
+
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '14px 18px', backgroundColor: '#fafafa', borderRadius: '8px' }}>
             <div>
               <p style={{ fontWeight: 600, color: '#222', margin: 0 }}>Thanh toán COD</p>
-              <p style={{ fontSize: '0.85rem', color: '#888', margin: '4px 0 0' }}>Thanh toán khi nhận hàng</p>
+              <p style={{ fontSize: '0.85rem', color: '#888', margin: '4px 0 0' }}>Cho phép khách hàng thanh toán bằng tiền mặt khi nhận hàng</p>
             </div>
-            <span style={{ padding: '4px 14px', backgroundColor: '#d4edda', color: '#155724', borderRadius: '20px', fontWeight: 600, fontSize: '0.82rem' }}>Đang bật</span>
+            <label className="switch" style={{ position: 'relative', display: 'inline-block', width: '50px', height: '26px' }}>
+              <input type="checkbox" name="enableCOD" checked={shopInfo.enableCOD} onChange={handleChange} style={{ opacity: 0, width: 0, height: 0 }} />
+              <span style={{
+                position: 'absolute', cursor: 'pointer', top: 0, left: 0, right: 0, bottom: 0,
+                backgroundColor: shopInfo.enableCOD ? 'var(--primary)' : '#ccc',
+                transition: '0.4s', borderRadius: '34px'
+              }}>
+                <span style={{
+                  position: 'absolute', content: '""', height: '18px', width: '18px', left: '4px', bottom: '4px',
+                  backgroundColor: 'white', transition: '0.4s', borderRadius: '50%',
+                  transform: shopInfo.enableCOD ? 'translateX(24px)' : 'none'
+                }} />
+              </span>
+            </label>
           </div>
+
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '14px 18px', backgroundColor: '#fafafa', borderRadius: '8px' }}>
             <div>
-              <p style={{ fontWeight: 600, color: '#222', margin: 0 }}>Chuyển khoản ngân hàng</p>
-              <p style={{ fontSize: '0.85rem', color: '#888', margin: '4px 0 0' }}>Khách chuyển khoản trước khi giao</p>
+              <p style={{ fontWeight: 600, color: '#222', margin: 0 }}>Thanh toán VNPay (Banking)</p>
+              <p style={{ fontSize: '0.85rem', color: '#888', margin: '4px 0 0' }}>Kích hoạt quét mã QR VNPay hoặc ngân hàng qua cổng VNPAY</p>
             </div>
-            <span style={{ padding: '4px 14px', backgroundColor: '#d4edda', color: '#155724', borderRadius: '20px', fontWeight: 600, fontSize: '0.82rem' }}>Đang bật</span>
+            <label className="switch" style={{ position: 'relative', display: 'inline-block', width: '50px', height: '26px' }}>
+              <input type="checkbox" name="enableVNPay" checked={shopInfo.enableVNPay} onChange={handleChange} style={{ opacity: 0, width: 0, height: 0 }} />
+              <span style={{
+                position: 'absolute', cursor: 'pointer', top: 0, left: 0, right: 0, bottom: 0,
+                backgroundColor: shopInfo.enableVNPay ? 'var(--primary)' : '#ccc',
+                transition: '0.4s', borderRadius: '34px'
+              }}>
+                <span style={{
+                  position: 'absolute', content: '""', height: '18px', width: '18px', left: '4px', bottom: '4px',
+                  backgroundColor: 'white', transition: '0.4s', borderRadius: '50%',
+                  transform: shopInfo.enableVNPay ? 'translateX(24px)' : 'none'
+                }} />
+              </span>
+            </label>
           </div>
-        </div>
+
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '14px 18px', backgroundColor: '#fafafa', borderRadius: '8px' }}>
+            <div>
+              <p style={{ fontWeight: 600, color: '#222', margin: 0 }}>Chuyển khoản thủ công qua ngân hàng (Bank Transfer)</p>
+              <p style={{ fontSize: '0.85rem', color: '#888', margin: '4px 0 0' }}>Hiển thị số tài khoản ngân hàng của shop để khách chuyển khoản thủ công</p>
+            </div>
+            <label className="switch" style={{ position: 'relative', display: 'inline-block', width: '50px', height: '26px' }}>
+              <input type="checkbox" name="enableBankTransfer" checked={shopInfo.enableBankTransfer} onChange={handleChange} style={{ opacity: 0, width: 0, height: 0 }} />
+              <span style={{
+                position: 'absolute', cursor: 'pointer', top: 0, left: 0, right: 0, bottom: 0,
+                backgroundColor: shopInfo.enableBankTransfer ? 'var(--primary)' : '#ccc',
+                transition: '0.4s', borderRadius: '34px'
+              }}>
+                <span style={{
+                  position: 'absolute', content: '""', height: '18px', width: '18px', left: '4px', bottom: '4px',
+                  backgroundColor: 'white', transition: '0.4s', borderRadius: '50%',
+                  transform: shopInfo.enableBankTransfer ? 'translateX(24px)' : 'none'
+                }} />
+              </span>
+            </label>
+          </div>
+
+          <button type="submit" style={{ alignSelf: 'flex-start', padding: '12px 30px', backgroundColor: saved ? '#28a745' : 'var(--primary)', color: '#fff', border: 'none', borderRadius: '8px', fontSize: '0.95rem', fontWeight: 700, cursor: 'pointer', transition: 'all 0.3s', marginTop: '10px' }}>
+            {saved ? '✓ Đã lưu!' : 'Lưu cổng thanh toán'}
+          </button>
+        </form>
       </div>
 
       {/* Thông tin hệ thống */}
@@ -300,6 +489,16 @@ export default function AdminSettingsPage() {
           </div>
         </div>
       </div>
+      
+      {/* Bổ sung các media queries cho màn hình mobile của trang settings */}
+      <style dangerouslySetInnerHTML={{ __html: `
+        @media (max-width: 768px) {
+          .admin-stats-grid, div[style*="gridTemplateColumns"] {
+            grid-template-columns: 1fr !important;
+            gap: 15px !important;
+          }
+        }
+      `}} />
     </div>
   );
 }

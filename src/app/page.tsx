@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import Header from '@/components/Header';
+import Footer from '@/components/Footer';
 import Marquee from '@/components/Marquee';
 import PartnerCarousel from '@/components/PartnerCarousel';
 import Testimonial from '@/components/Testimonial';
@@ -209,38 +210,7 @@ export default function Home() {
       <SubscriptionForm />
 
       {/* Footer */}
-      <footer className={styles.footer}>
-        <div className={styles.footerContent}>
-          <div className={styles.footerBrand}>
-            <Image src="/assets/logo.png" alt="Andu Logo" width={90} height={90} className={styles.footerLogo} />
-            <p className={styles.footerDesc}>{shopSettings?.footerDesc || 'Nâng tầm phong cách, bảo vệ tầm nhìn của bạn mỗi ngày với công nghệ và thiết kế độc quyền.'}</p>
-          </div>
-          
-          <div className={styles.footerLinks}>
-            <div className={styles.footerCol}>
-              <h4>Thông Tin Liên Hệ</h4>
-              <p><span>📍</span> {shopSettings?.address || '36 Chùa Láng, Hà Nội, Việt Nam'}</p>
-              <p><span>📞</span> {shopSettings?.phone || '081 227 4744'}</p>
-              <p><span>✉️</span> {shopSettings?.email || 'cskh@kinhmatandu.com'}</p>
-              <p><span>💬</span> {shopSettings?.shopName || 'Kính Mắt AnDu'} - 36 Chùa Láng</p>
-              <p><span>🔗</span> kinhmatandu.com</p>
-            </div>
-            
-            <div className={styles.footerCol}>
-              <h4>Hỗ Trợ</h4>
-              <ul>
-                <li><a href="#">Chính sách đổi trả</a></li>
-                <li><a href="#">Hướng dẫn chọn size</a></li>
-                <li><a href="#">Kiểm tra thị lực</a></li>
-              </ul>
-            </div>
-          </div>
-        </div>
-        
-        <div className={styles.footerBottom}>
-          <p>&copy; 2026 Andu Eyewear. All rights reserved.</p>
-        </div>
-      </footer>
+      <Footer />
       {/* Floating Contact Buttons */}
       <FloatingContact />
     </main>
