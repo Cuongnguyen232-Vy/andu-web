@@ -194,12 +194,53 @@
 @media (max-width: 900px) {
   .testimonialSection {
     grid-template-columns: 1fr;
-    gap: 40px;
+    gap: 30px;
+    width: 100%;
+    padding: 40px 20px;
+    margin: 60px auto;
   }
   .quoteIcon {
     text-align: center;
+    font-size: 6rem;
+    margin-bottom: -25px;
   }
   .leftCol h2 {
     text-align: center;
+    font-size: 1.8rem;
+    white-space: normal;
+  }
+  .feedbackBox {
+    padding: 30px 20px;
+  }
+}
+
+@media (max-width: 768px) {
+  .dots {
+    display: none !important; /* Ẩn dấu chấm trên di động để tránh tràn khung ngang */
+  }
+  .feedbackHeader {
+    flex-direction: row;
+    justify-content: space-between;
+  }
+}
+
+@media (max-width: 600px) {
+  .feedbackContent {
+    flex-direction: column-reverse; /* Xếp ảnh bên dưới hoặc bên trên text để thoáng hơn */
+    gap: 20px;
+    padding: 20px;
+  }
+  .feedbackText {
+    font-size: 1rem;
+    text-align: center;
+  }
+  .feedbackImageWrapper {
+    width: 150px;
+    height: 150px;
+  }
+  .customerInfo {
+    flex-direction: column;
+    text-align: center;
+    gap: 12px;
   }
 }

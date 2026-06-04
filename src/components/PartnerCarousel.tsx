@@ -8,13 +8,45 @@ const certificates = [
   '/assets/cert2.png',
   '/assets/cert3.png',
   '/assets/cert4.png',
-  '/assets/cert1.png', // Lặp lại để slide mượt mà
+  '/assets/cert1.png',
   '/assets/cert2.png',
   '/assets/cert3.png',
 ];
 
 export default function PartnerCarousel() {
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [slidesToShow, setSlidesToShow] = useState(4);
+  const [touchStart, setTouchStart] = useState<number | null>(null);
+  const [touchEnd, setTouchEnd] = useState<number | null>(null);
+
+  useEffect(() => {
+    const handleResize = () => {
+      const w = window.innerWidth;
+      if (w < 480) {
+        setSlidesToShow(1);
+      } else if (w < 768) {
+        setSlidesToShow(2);
+      } else if (w < 1024) {
+        setSlidesToShow(3);
+      } else {
+        setSlidesToShow(4);
+      }
+    };
+
+    handleResize();
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  const maxIndex = Math.max(0, certificates.length - slidesToShow);
+
+  const nextSlide = () => {
+    setCurrentIndex((prev) => (prev >= maxIndex ? 0 : prev + 1));
+  };
+
+  const prevSlide = () => {
+    setCurrentIndex((prev) => (prev <= 0 ? maxIndex : prev - 1));
+  };
 
   // Tự động chuyển slide sau mỗi 3 giây
   useEffect(() => {
@@ -22,26 +54,47 @@ export default function PartnerCarousel() {
       nextSlide();
     }, 3000);
     return () => clearInterval(timer);
-  }, [currentIndex]);
+  }, [maxIndex]);
 
-  const nextSlide = () => {
-    // Tính toán số lượng hiển thị dựa vào window width nếu muốn responsive chính xác
-    // Ở đây mặc định hiển thị 4 cái, nên max index = tổng - 4
-    setCurrentIndex((prev) => (prev >= certificates.length - 4 ? 0 : prev + 1));
+  const minSwipeDistance = 50;
+
+  const onTouchStart = (e: React.TouchEvent) => {
+    setTouchEnd(null);
+    setTouchStart(e.targetTouches[0].clientX);
   };
 
-  const prevSlide = () => {
-    setCurrentIndex((prev) => (prev <= 0 ? certificates.length - 4 : prev - 1));
+  const onTouchMove = (e: React.TouchEvent) => {
+    setTouchEnd(e.targetTouches[0].clientX);
+  };
+
+  const onTouchEnd = () => {
+    if (!touchStart || !touchEnd) return;
+    const distance = touchStart - touchEnd;
+    const isLeftSwipe = distance > minSwipeDistance;
+    const isRightSwipe = distance < -minSwipeDistance;
+    if (isLeftSwipe) {
+      nextSlide();
+    } else if (isRightSwipe) {
+      prevSlide();
+    }
   };
 
   return (
-    <div className={styles.partnerCarouselWrapper}>
+    <div 
+      className={styles.partnerCarouselWrapper} 
+      style={{ '--slides-to-show': slidesToShow } as React.CSSProperties}
+    >
       <button className={styles.carouselBtn} onClick={prevSlide}>&lsaquo;</button>
       
-      <div className={styles.carouselViewport}>
+      <div 
+        className={styles.carouselViewport}
+        onTouchStart={onTouchStart}
+        onTouchMove={onTouchMove}
+        onTouchEnd={onTouchEnd}
+      >
         <div 
           className={styles.carouselTrack} 
-          style={{ transform: `translateX(calc(-${currentIndex} * (25% + 5px)))` }}
+          style={{ transform: `translateX(calc(-${currentIndex} * (100% + var(--gap)) / var(--slides-to-show)))` }}
         >
           {certificates.map((src, i) => (
             <div key={i} className={styles.certCard}>
