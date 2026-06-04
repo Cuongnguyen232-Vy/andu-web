@@ -40,7 +40,10 @@ export async function GET() {
         enableFreeShipOver500k: true,
         enableCOD: true,
         enableVNPay: true,
-        enableBankTransfer: true
+        enableBankTransfer: true,
+        vnpTmnCode: 'KOGW3BGB',
+        vnpHashSecret: 'UHSKWYRTEUJDZVOMJPOWIRNQMSLKJHDF',
+        vnpUrlMode: 'sandbox'
       });
     }
 

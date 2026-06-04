@@ -1,15 +1,29 @@
 import { NextResponse } from 'next/server';
 import crypto from 'crypto';
+import prisma from '@/lib/prisma';
 
 export async function POST(request: Request) {
   try {
     const body = await request.json();
     const { orderId, amount, bankCode } = body;
 
-    const tmnCode = process.env.VNP_TMNCODE || 'KOGW3BGB'; // Mã test sandbox
-    const secretKey = process.env.VNP_HASHSECRET || 'UHSKWYRTEUJDZVOMJPOWIRNQMSLKJHDF'; // Mã test sandbox
-    const vnpUrl = 'https://sandbox.vnpayment.vn/paymentv2/vpcpay.html';
-    const returnUrl = 'http://localhost:3000/checkout/vnpay-return';
+    // Đọc cấu hình từ database
+    const config = await prisma.setting.findUnique({
+      where: { key: 'store_config' }
+    });
+    const settings = config ? JSON.parse(config.value) : {};
+
+    const tmnCode = process.env.VNP_TMNCODE || settings.vnpTmnCode || 'KOGW3BGB';
+    const secretKey = process.env.VNP_HASHSECRET || settings.vnpHashSecret || 'UHSKWYRTEUJDZVOMJPOWIRNQMSLKJHDF';
+    
+    const vnpUrlMode = settings.vnpUrlMode || 'sandbox';
+    const vnpUrl = vnpUrlMode === 'production'
+      ? 'https://pay.vnpayment.vn/paymentv2/vpcpay.html'
+      : 'https://sandbox.vnpayment.vn/paymentv2/vpcpay.html';
+
+    // Tạo returnUrl động từ origin của request
+    const origin = request.headers.get('origin') || new URL(request.url).origin;
+    const returnUrl = `${origin}/checkout/vnpay-return`;
 
     const date = new Date();
     const createDate = 

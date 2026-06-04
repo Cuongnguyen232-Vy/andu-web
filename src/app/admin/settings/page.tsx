@@ -35,7 +35,10 @@ export default function AdminSettingsPage() {
     enableFreeShipOver500k: true,
     enableCOD: true,
     enableVNPay: true,
-    enableBankTransfer: true
+    enableBankTransfer: true,
+    vnpTmnCode: 'KOGW3BGB',
+    vnpHashSecret: 'UHSKWYRTEUJDZVOMJPOWIRNQMSLKJHDF',
+    vnpUrlMode: 'sandbox'
   });
 
   const [saved, setSaved] = useState(false);
@@ -461,6 +464,38 @@ export default function AdminSettingsPage() {
 
           <button type="submit" style={{ alignSelf: 'flex-start', padding: '12px 30px', backgroundColor: saved ? '#28a745' : 'var(--primary)', color: '#fff', border: 'none', borderRadius: '8px', fontSize: '0.95rem', fontWeight: 700, cursor: 'pointer', transition: 'all 0.3s', marginTop: '10px' }}>
             {saved ? '✓ Đã lưu!' : 'Lưu cổng thanh toán'}
+          </button>
+        </form>
+      </div>
+
+      {/* Cấu hình Cổng Thanh Toán VNPay */}
+      <div style={{ backgroundColor: '#fff', padding: '30px', borderRadius: '12px', boxShadow: '0 2px 15px rgba(0,0,0,0.04)', marginBottom: '25px' }}>
+        <h2 style={{ fontSize: '1.1rem', fontWeight: 700, color: '#222', marginBottom: '25px', paddingBottom: '12px', borderBottom: '1px solid #eee', textTransform: 'uppercase', letterSpacing: '1px' }}>
+          💳 Cấu hình Cổng VNPay
+        </h2>
+        <form onSubmit={handleSave} style={{ display: 'flex', flexDirection: 'column', gap: '18px' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '18px' }}>
+            <div>
+              <label style={labelStyle}>Mã website (vnp_TmnCode)</label>
+              <input name="vnpTmnCode" value={shopInfo.vnpTmnCode || ''} onChange={handleChange} style={inputStyle} placeholder="Ví dụ: KOGW3BGB" onFocus={(e) => e.target.style.borderColor = 'var(--primary)'} onBlur={(e) => e.target.style.borderColor = '#e0e0e0'} />
+            </div>
+            <div>
+              <label style={labelStyle}>Chuỗi bảo mật (vnp_HashSecret)</label>
+              <input name="vnpHashSecret" value={shopInfo.vnpHashSecret || ''} onChange={handleChange} style={inputStyle} placeholder="Ví dụ: UHSKWYRTE..." onFocus={(e) => e.target.style.borderColor = 'var(--primary)'} onBlur={(e) => e.target.style.borderColor = '#e0e0e0'} />
+            </div>
+          </div>
+          <div>
+            <label style={labelStyle}>Môi trường kết nối VNPay</label>
+            <select name="vnpUrlMode" value={shopInfo.vnpUrlMode || 'sandbox'} onChange={handleChange} style={{ ...inputStyle, cursor: 'pointer' }} onFocus={(e) => e.target.style.borderColor = 'var(--primary)'} onBlur={(e) => e.target.style.borderColor = '#e0e0e0'}>
+              <option value="sandbox">Thử nghiệm (Sandbox)</option>
+              <option value="production">Môi trường thật (Production)</option>
+            </select>
+            <p style={{ fontSize: '0.82rem', color: '#888', marginTop: '6px' }}>
+              * Chọn Sandbox khi test với thẻ test của VNPay. Chọn Production khi chạy chính thức với tài khoản doanh nghiệp thật.
+            </p>
+          </div>
+          <button type="submit" style={{ alignSelf: 'flex-start', padding: '12px 30px', backgroundColor: saved ? '#28a745' : 'var(--primary)', color: '#fff', border: 'none', borderRadius: '8px', fontSize: '0.95rem', fontWeight: 700, cursor: 'pointer', transition: 'all 0.3s' }}>
+            {saved ? '✓ Đã lưu!' : 'Lưu cấu hình VNPay'}
           </button>
         </form>
       </div>
