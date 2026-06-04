@@ -59,12 +59,12 @@ export async function POST(request: Request) {
         return acc;
       }, {});
 
-    const signData = new URLSearchParams(vnp_Params).toString();
+    const signData = new URLSearchParams(vnp_Params).toString().replace(/\+/g, '%20');
     const hmac = crypto.createHmac('sha512', secretKey);
     const signed = hmac.update(Buffer.from(signData, 'utf-8')).digest('hex');
     vnp_Params['vnp_SecureHash'] = signed;
 
-    const paymentUrl = vnpUrl + '?' + new URLSearchParams(vnp_Params).toString();
+    const paymentUrl = vnpUrl + '?' + new URLSearchParams(vnp_Params).toString().replace(/\+/g, '%20');
     
     return NextResponse.json({ url: paymentUrl });
   } catch (error) {
