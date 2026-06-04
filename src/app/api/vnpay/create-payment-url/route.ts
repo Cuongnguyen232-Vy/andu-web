@@ -13,9 +13,9 @@ export async function POST(request: Request) {
     });
     const settings = config ? JSON.parse(config.value) : {};
 
-    const tmnCode = process.env.VNP_TMNCODE || settings.vnpTmnCode || 'KOGW3BGB';
-    const secretKey = process.env.VNP_HASHSECRET || settings.vnpHashSecret || 'UHSKWYRTEUJDZVOMJPOWIRNQMSLKJHDF';
-    
+    const tmnCode = (process.env.VNP_TMNCODE || settings.vnpTmnCode || 'KOGW3BGB').trim();
+    const secretKey = (process.env.VNP_HASHSECRET || settings.vnpHashSecret || 'UHSKWYRTEUJDZVOMJPOWIRNQMSLKJHDF').trim();
+
     const vnpUrlMode = settings.vnpUrlMode || 'sandbox';
     const vnpUrl = vnpUrlMode === 'production'
       ? 'https://pay.vnpayment.vn/paymentv2/vpcpay.html'
@@ -26,7 +26,7 @@ export async function POST(request: Request) {
     const returnUrl = `${origin}/checkout/vnpay-return`;
 
     const date = new Date();
-    const createDate = 
+    const createDate =
       date.getFullYear().toString() +
       ('0' + (date.getMonth() + 1)).slice(-2) +
       ('0' + date.getDate()).slice(-2) +
@@ -59,13 +59,13 @@ export async function POST(request: Request) {
         return acc;
       }, {});
 
-    const signData = new URLSearchParams(vnp_Params).toString().replace(/\+/g, '%20');
+    const signData = new URLSearchParams(vnp_Params).toString();
     const hmac = crypto.createHmac('sha512', secretKey);
     const signed = hmac.update(Buffer.from(signData, 'utf-8')).digest('hex');
     vnp_Params['vnp_SecureHash'] = signed;
 
-    const paymentUrl = vnpUrl + '?' + new URLSearchParams(vnp_Params).toString().replace(/\+/g, '%20');
-    
+    const paymentUrl = vnpUrl + '?' + new URLSearchParams(vnp_Params).toString();
+
     return NextResponse.json({ url: paymentUrl });
   } catch (error) {
     console.error('Lỗi VNPay Create URL:', error);
